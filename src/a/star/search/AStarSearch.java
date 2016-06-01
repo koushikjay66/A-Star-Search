@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Queue;
 
 /**
  *
@@ -20,7 +21,7 @@ public class AStarSearch {
      * @param args the command line arguments
      */
     
-     static int number_of_cities;
+    static int number_of_cities;
     static int number_of_roads;
     static String start;
     static String end;
@@ -30,6 +31,7 @@ public class AStarSearch {
     static int graph_matrix[][];
     static boolean visited[];
     static int tuni[];
+    
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
         
@@ -125,4 +127,26 @@ public class AStarSearch {
         return -1;
     }// End of function search
     
+    
+    public static void Dijkstra(int [][]graph, int source, int destination){
+        int distance[]=new int[number_of_cities];
+        int prev[] =new int[number_of_cities];
+        
+        for (int i = 0; i < distance.length; i++) {
+            if(i!=source){
+                distance[i]=-999;
+                prev[i]=-99;
+            }
+        } 
+        
+        /*
+        Initialed all the vertex to 0
+        
+        
+        */
+        
+        
+        
+        
+    }//End of function Dijkstra
 }
