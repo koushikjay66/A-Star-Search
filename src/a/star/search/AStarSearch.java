@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  *
@@ -40,7 +41,9 @@ public class AStarSearch {
 //                System.out.print(city_list[i]+"->"+i+" , ");
 //            }
 //            System.out.println();
-//            
+            
+            Dijkstra(2,12);
+            
 //            for (int i = 0; i < graph_matrix.length; i++) {
 //                for (int j = 0; j < graph_matrix.length; j++) {
 //                    if(graph_matrix[i][j]!=0){
@@ -50,7 +53,7 @@ public class AStarSearch {
 //                }
 //                System.out.println();
 //        }
-    }
+    }// End of main method
     
     
     
@@ -93,7 +96,6 @@ public class AStarSearch {
                col=r;
            }
             
-           
             graph_matrix[row][col]=graph_matrix[col][row]=Integer.parseInt(roads[2]);
             
             
@@ -101,7 +103,7 @@ public class AStarSearch {
         }
        
         for (int i = 0; i <number_of_cities; i++) {
-           // System.out.println(br.readLine());
+     
             String temp2[]=br.readLine().split(",");
             int index=search(city_list, temp2[0]);
             if(index==-1){
@@ -128,25 +130,87 @@ public class AStarSearch {
     }// End of function search
     
     
-    public static void Dijkstra(int [][]graph, int source, int destination){
+    public static void Dijkstra(int source, int destination){
+        int parent[]=new int[number_of_cities];
         int distance[]=new int[number_of_cities];
-        int prev[] =new int[number_of_cities];
+        
+        Stack<String> s=new Stack<String>();
+        int size=number_of_cities;
         
         for (int i = 0; i < distance.length; i++) {
             if(i!=source){
-                distance[i]=-999;
-                prev[i]=-99;
+                distance[i]=99999;
+                //prev[i]=-99;
+                parent[i]=-99;
             }
-        } 
+        }
+        parent[source]=source;
+        distance[source]=0; // Set the Distance of the source node to 0
+        s.push(city_list[source]);
+        visited[source]=true;
         
-        /*
-        Initialed all the vertex to 0
+        int i=source;
+        // the Next while loop is for traversing all the edges
+        while(size!=1){
+            /*
+            *This for loop is for traversing all the neighbours of a vertex 
+            */
+             // This is min is for should I update the value of not.
+            for (int j = 0; j < city_list.length; j++) {
+                
+                   if(graph_matrix[i][j]>0 && visited[j]!=true){
+                      // System.out.print(graph_matrix[i][j]);
+                       //System.out.println(" is from "+city_list[i]+" to "+city_list[j]);
+                           // This is the checking if there exists a path from vertex i to vertex j
+                       if(distance[j]>graph_matrix[i][j]+distance[i]){
+                           // It means my current weight is greater or biggar than the new path
+                           distance[j]=graph_matrix[i][j]+distance[i];
+                           parent[j]=i;
+                          // System.out.println("Parent of "+city_list[j]+" is "+ city_list[i] +" Distance is "+distance[j]);
+                       }
+                   }
+            }
+           // System.out.println("______________");
+            int min=9999;
+            int min_index=0;
+            for (int j = 0; j < city_list.length; j++) {
+                if(graph_matrix[i][j]>0  && visited[j]!=true){
+                    // This is the checking if there exists a path from vertex i to vertex j
+                    if(min>distance[j]){
+                        min_index=j;
+                       // System.out.println("So the minimum here is from " +city_list[i]+" to "+city_list[j]+ " and distance is "+distance[j]);
+                        min=distance[j];
+                    }
+                }
+            }
+            
+            size--;
+            i=min_index;
+           // System.out.println("As distance is "+min+" So, "+city_list[min_index]+" is selected parent is "+city_list[parent[i]]);
+            visited[i]=true;
+            s.push(city_list[i]);
+            
+           // System.out.println("************");
+        }
         
+        //System.out.println(s.toString());
+        int k=destination;
+        Stack<String> temp=new Stack<String>();
+        System.out.println("If we choose this root total");
+        temp.push(city_list[k]);
+        while(parent[k]!=source){
+           // System.out.println(city_list[parent[k]]+"->");
+            temp.push(city_list[parent[k]]);
+            k=parent[k];
+        }
+        s.push(city_list[parent[k]]);
+        while(!temp.empty()){
+            System.out.print(temp.pop()+"->");
+        }
         
-        */
-        
-        
-        
-        
-    }//End of function Dijkstra
-}
+        System.out.println("Total distance is "+distance[destination]);
+        }//End of function Dijkstra
+       
+             
+    }// End of the whole class
+
